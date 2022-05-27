@@ -105,7 +105,7 @@ class SeleniumDriver:
         return self.driver.refresh()
 
 
-def find_exam(driver, period=[60, 5 * 60, 1], speed=[5, 50, 0.1]):
+def find_exam(driver, period=[30, 5 * 60, 1], speed=[5, 50, 0.1]):
     periods = list(map(lambda value: period[-1] * value, range(*period[:2])))
     speeds = list(map(lambda value: speed[-1] * value, range(*speed[:2])))
     playsound("sounds/horn.wav")
