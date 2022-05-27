@@ -1,15 +1,19 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import config
+import random
+import time
+
 from datetime import datetime, timedelta
-from selenium.webdriver.common.keys import Keys
+from playsound import playsound
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 chrome_options = Options()
 chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-import time
-import config
-from playsound import playsound
+
 
 class SeleniumDriver():
     def __init__(self):
@@ -76,21 +80,24 @@ class SeleniumDriver():
     def refresh_page(self):
         return self.driver.refresh()
 
-def find_exam(driver):
+def find_exam(driver, period=[60, 5 * 60, 1], speed=[5, 50, 0.1]):
+    periods = list(map(lambda value: period[-1] * value, range(*period[:2])))
+    speeds = list(map(lambda value: speed[-1] * value, range(*speed[:2])))
+    playsound('sounds/horn.wav')
     driver.select_exam()
     while driver.continue_running:
         for i in config.locations:
             try:
                 driver.select_exam_type()
-                time.sleep(0.3)
+                time.sleep(random.choice(speeds))
                 driver.select_rent_or_language()
-                time.sleep(0.3)
+                time.sleep(random.choice(speeds))
                 if driver.continue_running:
                     driver.select_location(i)
-                    time.sleep(0.1)
+                    time.sleep(random.choice(speeds))
                     for j in range(0, len(config.dates), 2):
                         driver.continue_running = driver.select_time(config.dates[j], config.dates[j+1])
-                        time.sleep(0.1)
+                        time.sleep(random.choice(speeds))
                         if not driver.continue_running:
                             timestamp = datetime.now() + timedelta(minutes=15)
                             while datetime.now() < timestamp:
@@ -99,7 +106,7 @@ def find_exam(driver):
             except:
                 pass
         driver.refresh_page()
-        time.sleep(1)
+        time.sleep(random.choice(periods))
 
 if __name__ == '__main__':
     find_exam(SeleniumDriver())

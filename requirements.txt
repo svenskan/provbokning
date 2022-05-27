@@ -1,3 +1,4 @@
+PyObjC==8.5
 config==0.5.1
 playsound==1.2.2
 selenium==4.1.3
