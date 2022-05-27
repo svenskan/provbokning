@@ -15,10 +15,10 @@ chrome_options = Options()
 chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
 
-class SeleniumDriver():
+class SeleniumDriver:
     def __init__(self):
-        self.driver = webdriver.Chrome('chromedriver', options=chrome_options)
-        self.driver.get('https://fp.trafikverket.se/boka/#/licence')
+        self.driver = webdriver.Chrome("chromedriver", options=chrome_options)
+        self.driver.get("https://fp.trafikverket.se/boka/#/licence")
         self.driver.implicitly_wait(0.1)
         self.continue_running = True
 
@@ -26,24 +26,42 @@ class SeleniumDriver():
         try:
             while self.driver.title == "Förarprov - Bokning":
                 WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.ID, "social-security-number-input"))
+                    EC.presence_of_element_located(
+                        (By.ID, "social-security-number-input")
+                    )
                 ).send_keys(config.social_security)
-                self.driver.find_element(By.XPATH, f"//*[@title='{config.license_type}']").click()
+                self.driver.find_element(
+                    By.XPATH, f"//*[@title='{config.license_type}']"
+                ).click()
         except:
             pass
 
     def select_exam_type(self):
         try:
-            exam_element = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//select[@id='examination-type-select']/option[text()='{config.exam}']"))
-            ).click()
+            exam_element = (
+                WebDriverWait(self.driver, 10)
+                .until(
+                    EC.presence_of_element_located(
+                        (
+                            By.XPATH,
+                            f"//select[@id='examination-type-select']/option[text()='{config.exam}']",
+                        )
+                    )
+                )
+                .click()
+            )
         except:
             pass
 
     def select_rent_or_language(self):
         try:
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, f"//select[@id='vehicle-select']/option[text()='{config.rent_or_language}']"))
+                EC.presence_of_element_located(
+                    (
+                        By.XPATH,
+                        f"//select[@id='vehicle-select']/option[text()='{config.rent_or_language}']",
+                    )
+                )
             ).click()
         except:
             pass
@@ -60,15 +78,19 @@ class SeleniumDriver():
             pass
 
     def select_time(self, first_date, last_date):
-        first_date = datetime.strptime(first_date, '%Y-%m-%d').date()
-        last_date = datetime.strptime(last_date, '%Y-%m-%d').date()
+        first_date = datetime.strptime(first_date, "%Y-%m-%d").date()
+        last_date = datetime.strptime(last_date, "%Y-%m-%d").date()
         try:
             WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, f"//*[text()='Lediga provtider']"))
+                EC.presence_of_element_located(
+                    (By.XPATH, f"//*[text()='Lediga provtider']")
+                )
             )
             while first_date < last_date:
                 try:
-                    find_date = self.driver.find_element(By.XPATH, f"//*[contains(text(), '{str(first_date)}')]")
+                    find_date = self.driver.find_element(
+                        By.XPATH, f"//*[contains(text(), '{str(first_date)}')]"
+                    )
                     if find_date:
                         find_date.find_element(By.XPATH, f"//*[text()='Välj']").click()
                         return False
@@ -82,10 +104,11 @@ class SeleniumDriver():
     def refresh_page(self):
         return self.driver.refresh()
 
+
 def find_exam(driver, period=[60, 5 * 60, 1], speed=[5, 50, 0.1]):
     periods = list(map(lambda value: period[-1] * value, range(*period[:2])))
     speeds = list(map(lambda value: speed[-1] * value, range(*speed[:2])))
-    playsound('sounds/horn.wav')
+    playsound("sounds/horn.wav")
     driver.select_exam()
     while driver.continue_running:
         for i in config.locations:
@@ -113,11 +136,12 @@ def find_exam(driver, period=[60, 5 * 60, 1], speed=[5, 50, 0.1]):
         if not driver.continue_running:
             break
         timeout = random.choice(periods)
-        print(f'Sleeping for {timeout} seconds...')
+        print(f"Sleeping for {timeout} seconds...")
         time.sleep(timeout)
         driver.refresh_page()
     while True:
-        playsound('sounds/alert.mp3')
+        playsound("sounds/alert.mp3")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     find_exam(SeleniumDriver())
