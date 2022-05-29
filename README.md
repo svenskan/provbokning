@@ -11,7 +11,7 @@
 2. Install Python:
 
 ```shell
-brew install python
+brew install python3
 ```
 
 3. Install [Google Chrome]. If the browser is already installed, update to the
