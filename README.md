@@ -28,7 +28,7 @@ git clone https://github.com/svenskan/provbokning.git
 
 ```shell
 cd ~/Downloads/provbokning
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 6. Download and unpack the latest version of [ChromeDriver] in `provbokning`,
@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 ```shell
 cd ~/Downloads/provbokning
-PATH="${PATH}:${PWD}" python bot.py
+PATH="${PATH}:${PWD}" python3 bot.py
 ```
 
 3. Alternatively, run `bot2.py` for doing everything automatically except for
@@ -57,7 +57,7 @@ PATH="${PATH}:${PWD}" python bot.py
 
 ```shell
 cd ~/Downloads/provbokning
-PATH="${PATH}:${PWD}" python bot2.py
+PATH="${PATH}:${PWD}" python3 bot2.py
 ```
 
 [ChromeDriver]: https://sites.google.com/chromium.org/driver/
