@@ -8,7 +8,7 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-2. Install Python:
+2. Install Python 3:
 
 ```shell
 brew install python3
