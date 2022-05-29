@@ -34,7 +34,8 @@ pip3 install -r requirements.txt
 6. Download and unpack the latest version of [ChromeDriver] in `provbokning`,
    which was created after cloning. The version of ChromeDriver should match the
    one of Chrome (open `chrome://settings/help` in Chrome). After unpacking,
-   there should be a file called `chromedriver` in `provbokning`.
+   there should be a file called `chromedriver` directly in `provbokning`, not
+   in a subfolder called `chromedriver`.
 
 ## Usage
 
